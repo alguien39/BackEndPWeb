@@ -161,6 +161,48 @@ app.post('/Peliculas', (req, res) => {
     });
 });
 
+// Ejemplo de endpoint: PUT /Peliculas/:id
+app.put('/Peliculas/:id', (req, res) => {
+    const PeliculaIDParam = parseInt(req.params.id, 10);
+
+    // Extraemos los datos del body. Asegúrate que el frontend envíe los campos con estos nombres.
+    const {
+        Titulo,
+        FechaEstreno,
+        Presupuesto,
+        Recaudacion,
+        DirectorID,
+        CategoriaID,
+        DuracionMinutos,
+        Sinopsis,
+        PosterImg
+    } = req.body;
+
+    const query = `CALL ActualizarPelicula(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    db.query(query, [
+        PeliculaIDParam,
+        Titulo,
+        FechaEstreno,
+        Presupuesto,
+        Recaudacion,
+        DirectorID,
+        CategoriaID,
+        DuracionMinutos,
+        Sinopsis,
+        PosterImg
+    ], (err, results) => {
+        if (err) {
+            console.error('Error al actualizar la película:', err);
+            return res.status(500).json({ message: 'Error al actualizar la película', error: err });
+        }
+
+        // En caso de éxito, puedes verificar las filas afectadas si lo deseas.
+        res.json({ message: 'Película actualizada exitosamente', data: results });
+    });
+});
+
+
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
