@@ -161,43 +161,51 @@ app.post('/Peliculas', (req, res) => {
     });
 });
 
-// Ejemplo de endpoint: PUT /Peliculas/:id
+// Endpoint para actualizar una película
 app.put('/Peliculas/:id', (req, res) => {
     const PeliculaIDParam = parseInt(req.params.id, 10);
 
-    // Extraemos los datos del body. Asegúrate que el frontend envíe los campos con estos nombres.
+    if (isNaN(PeliculaIDParam)) {
+        return res.status(400).json({ message: 'ID de película inválido' });
+    }
+
     const {
-        Titulo,
-        FechaEstreno,
-        Presupuesto,
-        Recaudacion,
-        DirectorID,
-        CategoriaID,
-        DuracionMinutos,
-        Sinopsis,
-        PosterImg
+        titulo,
+        fechaEstreno,
+        presupuesto,
+        recaudacion,
+        director,
+        categoria,
+        duracion,
+        sinopsis,
+        poster
     } = req.body;
+
+    if (!titulo || !fechaEstreno || isNaN(presupuesto) || isNaN(recaudacion) ||
+        isNaN(director) || isNaN(categoria) || isNaN(duracion) ||
+        !sinopsis || !poster) {
+        return res.status(400).json({ message: 'Todos los campos son obligatorios y deben ser válidos.' });
+    }
 
     const query = `CALL ActualizarPelicula(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     db.query(query, [
         PeliculaIDParam,
-        Titulo,
-        FechaEstreno,
-        Presupuesto,
-        Recaudacion,
-        DirectorID,
-        CategoriaID,
-        DuracionMinutos,
-        Sinopsis,
-        PosterImg
+        titulo,
+        fechaEstreno,
+        presupuesto,
+        recaudacion,
+        director,
+        categoria,
+        duracion,
+        sinopsis,
+        poster
     ], (err, results) => {
         if (err) {
             console.error('Error al actualizar la película:', err);
             return res.status(500).json({ message: 'Error al actualizar la película', error: err });
         }
 
-        // En caso de éxito, puedes verificar las filas afectadas si lo deseas.
         res.json({ message: 'Película actualizada exitosamente', data: results });
     });
 });
