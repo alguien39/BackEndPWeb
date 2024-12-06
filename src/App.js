@@ -22,7 +22,7 @@ db.connect((err) => {
 
 // Obtener todas las peliculas
 app.get('/Peliculas', (req, res) => {
-    const query = 'SELECT * FROM MostrarPeliculas';
+    const query = 'SELECT * FROM mostrarpeliculas';
     db.query(query, (err, results) => {
         if (err) {
             console.error('Error al obtener datos:', err);
@@ -34,12 +34,12 @@ app.get('/Peliculas', (req, res) => {
 });
 
 // Eliminar crítica por ID
-app.delete('/Criticas/:criticaID', (req, res) => {
+app.delete('/criticas/:criticaID', (req, res) => {
     const { criticaID } = req.params;  // Obtener el ID de la crítica desde los parámetros de la URL
     console.log('ID de crítica a eliminar:', criticaID);  // Verificar qué ID está recibiendo el servidor
 
     // Aquí cambiamos 'ID' por 'CriticaID' según el nombre del campo en tu tabla
-    const query = `DELETE FROM Criticas WHERE CriticaID = ?`;
+    const query = `DELETE FROM criticas WHERE CriticaID = ?`;
 
     db.query(query, [criticaID], (err, results) => {
         if (err) {
@@ -61,7 +61,7 @@ app.delete('/Criticas/:criticaID', (req, res) => {
 //Mostrar criticas por IdDePelicula
 app.get('/Criticas/:peliculaID', (req, res) => {
     const { peliculaID } = req.params;
-    const query = `SELECT * FROM Criticas WHERE PeliculaID = ?`;
+    const query = `SELECT * FROM criticas WHERE PeliculaID = ?`;
 
     db.query(query, [peliculaID], (err, results) => {
         if (err) {
@@ -109,7 +109,7 @@ app.post('/Criticas', [
 //Consultar Datos de Pelicula Por Id
 app.get('/Peliculas/:peliculaID', (req, res) => {
     const { peliculaID } = req.params;
-    const query = `SELECT * FROM MostrarPeliculas WHERE PeliculaID = ?`;
+    const query = `SELECT * FROM mostrarpeliculas WHERE PeliculaID = ?`;
     db.query(query, [peliculaID], (err, results) => {
         if (err) {
             console.error('Error al obtener película:', err);
@@ -124,7 +124,7 @@ app.get('/Peliculas/:peliculaID', (req, res) => {
 //Consultar Actores por IdPelicula
 app.get('/Peliculas/:peliculaID/Actores', (req, res) => {
     const { peliculaID } = req.params;
-    const query = `SELECT * FROM MostrarActoresPorPelicula WHERE PeliculaID = ?`;
+    const query = `SELECT * FROM mostraractoresporpelicula WHERE PeliculaID = ?`;
     db.query(query, [peliculaID], (err, results) => {
         if (err) {
             console.error('Error al obtener actores:', err);
@@ -137,7 +137,7 @@ app.get('/Peliculas/:peliculaID/Actores', (req, res) => {
 
 // Obtener las primeras 5 películas para el carrusel
 app.get('/api/carrusel', (req, res) => {
-    const query = 'SELECT * FROM MostrarPeliculas LIMIT 5'; // Obtener las primeras 5 películas
+    const query = 'SELECT * FROM mostrarpeliculas LIMIT 5'; // Obtener las primeras 5 películas
     db.query(query, (err, results) => {
         if (err) {
             console.error('Error al obtener películas para el carrusel:', err);
