@@ -1,10 +1,5 @@
-require('dotenv').config();
-
+const {PORT} = require("./config.js");
 const express = require("express");
-const path = require("path");
-const multer = require("multer");
-const pdf = require("pdfkit");
-const fs = require("fs");
 const cors = require("cors");
 const { check, validationResult } = require("express-validator");
 const mysql2 = require("mysql2");
@@ -166,8 +161,6 @@ app.post('/Peliculas', (req, res) => {
     });
 });
 
-
-const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
